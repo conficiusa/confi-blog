@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Modal from "@/components/modal";
+import SignInform from "@/components/signInform";
 
 export default function SignInDialog() {
   return (
@@ -42,7 +43,7 @@ export default function SignInDialog() {
           <Github className="mr-2 h-4 w-4" />
           Sign in with GitHub
         </Button>
-        <div className="relative my-4">
+        <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t border-gray-300" />
           </div>
@@ -50,29 +51,7 @@ export default function SignInDialog() {
             <span className="bg-background px-2 text-muted-foreground">Or</span>
           </div>
         </div>
-        <form>
-          <div className="grid gap-2">
-            <Label htmlFor="email" className="text-sm font-medium">
-              Email
-            </Label>
-            <Input
-              id="email"
-              placeholder="name@example.com"
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              className="rounded-md"
-            />
-          </div>
-          <Button
-            className="mt-4 w-full bg-primary text-primary-foreground hover:bg-primary/90"
-            type="submit"
-          >
-            <Mail className="mr-2 h-4 w-4" />
-            Sign in with Email
-          </Button>
-        </form>
+        <SignInform />
       </div>
     </Modal>
   );

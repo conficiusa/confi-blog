@@ -23,9 +23,13 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
   return (
     <Dialog defaultOpen={true} open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="overflow-hidden">
-        <DialogHeader className="sr-only">
-          <DialogTitle>hdd</DialogTitle>
-          <DialogDescription>"d</DialogDescription>
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold text-center">
+            Welcome Back
+          </DialogTitle>
+          <DialogDescription className="text-center">
+            Choose your preferred method to sign in to your account.
+          </DialogDescription>
         </DialogHeader>
         <ScrollArea className="w-full max-h-[80dvh]">{children}</ScrollArea>
       </DialogContent>

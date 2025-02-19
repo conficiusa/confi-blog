@@ -4,6 +4,8 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import NextAuth, { type DefaultSession } from "next-auth";
 import User from "@/models/user";
 import connectToDatabase from "@/lib/mongoose";
+import Google from "next-auth/providers/google";
+
 
 declare module "next-auth" {
   interface User {
@@ -24,6 +26,7 @@ declare module "next-auth" {
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
+    Google({}),
     GitHub({
       profile(profile) {
         return {
