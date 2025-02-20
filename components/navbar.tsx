@@ -1,15 +1,10 @@
-import { auth, signIn, signOut } from "@/auth";
+import { auth, signOut } from "@/auth";
 import React from "react";
-// import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const Navbar = async () => {
   const session = await auth();
-  const initial = session?.user?.name
-    ?.split(" ")
-    .map((n) => n[0])
-    .join("");
   return (
     <nav className="">
       {!session?.user ? (
@@ -28,15 +23,6 @@ const Navbar = async () => {
           >
             <Button variant={"ghost"}>Sign out</Button>
           </form>
-          {/* <Avatar className="rounded-full">
-            {session?.user?.image && (
-              <AvatarImage
-                src={session?.user?.image}
-                className=" rounded-full"
-              />
-            )}
-            <AvatarFallback>{initial}</AvatarFallback>
-          </Avatar> */}
         </div>
       )}
     </nav>

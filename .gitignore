@@ -41,3 +41,11 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+#tests
+__tests__/
+__mocks__/
+
+jest.config.ts
+jest.setup.ts
+
+sanity/seed

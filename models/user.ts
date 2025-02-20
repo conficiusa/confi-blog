@@ -18,10 +18,9 @@ const UserSchema = new Schema<IUser, Model<IUser>>(
     role: {
       type: String,
       enum: ["admin", "reader"],
-      required: function (this: IUser) {
-        return this.isNew ? false : true; // Required during onboarding
-      },
+      default: "reader",
     },
+    interests: [{ type: String }],
   },
   {
     timestamps: true,

@@ -6,44 +6,14 @@ import CoverImage from "./cover-image";
 import DateComponent from "./date";
 import MoreStories from "./more-stories";
 import Onboarding from "./onboarding";
-import PortableText from "./portable-text";
 
 import type { HeroQueryResult } from "@/sanity.types";
-import * as demo from "@/sanity/lib/demo";
 import { sanityFetch } from "@/sanity/lib/fetch";
-import { heroQuery, settingsQuery } from "@/sanity/lib/queries";
-import { cn } from "@/lib/utils";
+import { heroQuery, settingsQuery, topicsQuery } from "@/sanity/lib/queries";
+import {  getStyles } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Intro } from "@/components/intro";
 
-
-export function Intro(props: {
-  title: string | null | undefined;
-  description: any;
-  textClassname?: string;
-}) {
-  const title = props.title || demo.title;
-  const description = props.description?.length
-    ? props.description
-    : demo.description;
-  return (
-    <section className="mt-16 mb-16 flex flex-col items-center lg:mb-12 lg:flex-row lg:justify-between">
-      <h1
-        className={cn(
-          "text-balance text-6xl font-bold leading-tight tracking-tighter lg:pr-8 lg:text-8xl",
-          props.textClassname
-        )}
-      >
-        {title || demo.title}
-      </h1>
-     
-      <h2 className="text-pretty mt-5 text-center text-sm lg:pl-8 lg:text-left sr-only">
-        <PortableText
-          className="prose-lg"
-          value={description?.length ? description : demo.description}
-        />
-      </h2>
-    </section>
-  );
-}
 
 function HeroPost({
   title,
@@ -52,10 +22,12 @@ function HeroPost({
   coverImage,
   date,
   author,
+  topic,
 }: Pick<
   Exclude<HeroQueryResult, null>,
-  "title" | "coverImage" | "date" | "excerpt" | "author" | "slug"
+  "title" | "coverImage" | "date" | "excerpt" | "author" | "slug" | "topic"
 >) {
+  console.log(topic?.color);
   return (
     <article>
       <Link className="group mb-8 block md:mb-16" href={`/posts/${slug}`}>
@@ -63,7 +35,8 @@ function HeroPost({
       </Link>
       <div className="mb-20 md:mb-28 md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-8">
         <div>
-          <h3 className="text-pretty mb-4 text-4xl leading-tight lg:text-6xl px-3">
+          <Badge style={getStyles("purple")}>{topic?.title}</Badge>
+          <h3 className="text-pretty mb-4 text-4xl leading-tight lg:text-6xl">
             <Link href={`/posts/${slug}`} className="hover:underline">
               {title}
             </Link>
@@ -104,6 +77,7 @@ export default async function Page() {
           excerpt={heroPost.excerpt}
           date={heroPost.date}
           author={heroPost.author}
+          topic={heroPost.topics[0]}
         />
       ) : (
         <Onboarding />
@@ -121,4 +95,3 @@ export default async function Page() {
     </div>
   );
 }
-

@@ -1,7 +1,10 @@
 import type { NextAuthConfig } from "next-auth";
 import { getToken } from "next-auth/jwt";
-
 export const authConfig: NextAuthConfig = {
+  pages: {
+    newUser: "/getting-started",
+  },
+
   // Refer to https://github.com/nextauthjs/next-auth/discussions/9133 in production
   callbacks: {
     async authorized({ auth, request }) {
@@ -10,22 +13,27 @@ export const authConfig: NextAuthConfig = {
         secret: process.env.AUTH_SECRET as string,
         secureCookie: process.env.NODE_ENV === "production",
       });
-
+    
+      console.log("confgtoken", token);
       const is_admin = token?.role === "admin";
       const currentPath = request.nextUrl.pathname;
       const isLoggedIn = !!auth?.user;
-      const protectedPaths = ["/studio"];
+      const adminPaths = ["/studio"];
+      const protectedPaths = ["/studio", "/getting-started"];
 
-      const isProtectedPath = protectedPaths.some((path) =>
-        currentPath.startsWith(path)
-      );
+      // Add getting-started to allowed paths for new users
 
-      // Redirect logic for doctors in "verifying" state
-      if (!is_admin && isProtectedPath) {
-        return Response.redirect(new URL("/sign-in", request.nextUrl));
+      if (isLoggedIn && currentPath === "/sign-in") {
+        return Response.redirect(new URL("/", request.nextUrl));
       }
 
-      return true; // Allow other paths
+      if (isLoggedIn && !is_admin && adminPaths.includes(currentPath)) {
+        return Response.redirect(new URL("/", request.nextUrl));
+      }
+      if (!isLoggedIn && protectedPaths.includes(currentPath)) {
+        return Response.redirect(new URL("/sign-in", request.nextUrl));
+      }
+      return true;
     },
   },
   providers: [],

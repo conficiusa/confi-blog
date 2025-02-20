@@ -111,6 +111,13 @@ export default defineType({
       type: "reference",
       to: [{ type: authorType.name }],
     }),
+    defineField({
+      name: "topics",
+      title: "Topics",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "topic" }] }],
+      options: { layout: "tags" },
+    }),
   ],
   preview: {
     select: {

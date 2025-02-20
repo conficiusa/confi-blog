@@ -1,17 +1,21 @@
-"use client";
 import type React from "react";
-import { Github, Mail } from "lucide-react";
+import { Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import Modal from "@/components/modal";
 import SignInform from "@/components/signInform";
+import { signIn } from "@/auth";
 
 export default function SignInDialog() {
   return (
     <Modal>
       <div className="flex flex-col gap-4 mt-4">
-        <form>
+        <form
+        action={async ()=>{
+          'use server'
+await signIn("google")
+        }}
+        >
           <Button variant="outline" className="w-full mb-4 ">
             <svg
               className="w-5 h-5 mr-2"

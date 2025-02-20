@@ -5,7 +5,7 @@ import NextAuth, { type DefaultSession } from "next-auth";
 import User from "@/models/user";
 import connectToDatabase from "@/lib/mongoose";
 import Google from "next-auth/providers/google";
-
+import { authConfig } from "./authconfig";
 
 declare module "next-auth" {
   interface User {
@@ -25,12 +25,12 @@ declare module "next-auth" {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
   providers: [
-    Google({}),
+    Google,
     GitHub({
       profile(profile) {
         return {
-          id: profile.id.toString(),
           name: profile.name,
           email: profile.email,
           image: profile.avatar_url,
@@ -39,6 +39,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  events: {
+    signIn: async ({ isNewUser, user, account }) => {
+      if (isNewUser) {
+        if (account?.provider === "google") {
+          await User.findOneAndUpdate(
+            { email: user?.email },
+            { role: "reader" }
+          );
+        }
+      }
+    },
+  },
   callbacks: {
     async jwt({ token, user }) {
       await connectToDatabase();
@@ -57,6 +69,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
   },
+
   adapter: MongoDBAdapter(client, {
     databaseName: "confidev",
   }),

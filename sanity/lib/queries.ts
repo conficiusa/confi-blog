@@ -11,7 +11,29 @@ const postFields = /* groq */ `
   coverImage,
   "date": coalesce(date, _updatedAt),
   "author": author->{"name": coalesce(name, "Anonymous"), picture},
+  "topics": topics[]->{
+    _id,
+    title,
+    color,
+    "slug": slug.current
+  }
 `;
+
+export const postsByTopicQuery = defineQuery(`
+  *[_type == "post" && $topicId in topics[]._ref] | order(date desc) {
+    ${postFields}
+  }
+`);
+
+export const topicsQuery = defineQuery(`
+  *[_type == "topic"] {
+    _id,
+    title,
+    color,
+    "slug":
+      slug.current,
+  }
+`);
 
 export const heroQuery = defineQuery(`
   *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) [0] {

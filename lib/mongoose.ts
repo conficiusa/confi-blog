@@ -28,7 +28,7 @@ async function connectToDatabase(): Promise<Mongoose> {
   if (!cached.promise) {
     const opts: mongoose.ConnectOptions = {
       bufferCommands: false,
-      dbName: "Medcare",
+      dbName: "confidev",
     };
 
     cached.promise = mongoose
