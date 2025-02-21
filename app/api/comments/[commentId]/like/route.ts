@@ -3,10 +3,8 @@ import connectToDatabase from "@/lib/mongoose";
 import Comment from "@/models/comment";
 import { auth } from "@/auth";
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { commentId: string } }
-) {
+export async function POST(req: NextRequest, props: { params: Promise<{ commentId: string }> }) {
+  const params = await props.params;
   try {
     const session = await auth()
     if (!session?.user) {

@@ -16,6 +16,7 @@ import * as demo from "@/sanity/lib/demo";
 
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 import AuthProvider from "@/components/providers/sessionProvider";
+import TanstackProvider from "@/components/providers/tanstackProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -65,7 +66,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={cn(" bg-white text-black", inter.variable)}>
+
       <AuthProvider>
+        <TanstackProvider>
         <body className="container mx-auto px-5 py-2 justify-end flex flex-col min-h-screen">
           <div>
             <section className="min-h-screen">
@@ -112,6 +115,7 @@ export default async function RootLayout({
             <SpeedInsights />
           </div>
         </body>
+        </TanstackProvider>
       </AuthProvider>
     </html>
   );

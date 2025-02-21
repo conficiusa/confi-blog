@@ -59,6 +59,7 @@ export const POST = auth(async (req) => {
       replies: [],
     });
 
+    console.log("Comment created", comment);
     if (parentId) {
       const parentComment = await Comment.findById(parentId);
       if (parentComment) {
@@ -66,9 +67,10 @@ export const POST = auth(async (req) => {
         await parentComment.save();
       }
     }
-    
+
     return NextResponse.json(comment, { status: 201 });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { error: "Failed to create comment" },
       { status: 500 }

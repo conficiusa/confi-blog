@@ -2,17 +2,14 @@ import { auth, signOut } from "@/auth";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { SignInButton } from "@/components/buttons";
 
 const Navbar = async () => {
   const session = await auth();
   return (
     <nav className="">
       {!session?.user ? (
-        <Link href={"/sign-in"}>
-          <button className="mx-3 border border-black bg-black py-3 px-12 font-bold text-white transition-colors duration-200 hover:bg-white hover:text-black lg:mb-0 lg:px-8">
-            Sign in
-          </button>
-        </Link>
+        <SignInButton />
       ) : (
         <div className="flex gap-2 items-center">
           <form

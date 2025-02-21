@@ -10,12 +10,14 @@ import CoverImage from "../../cover-image";
 import DateComponent from "../../date";
 import MoreStories from "../../more-stories";
 import PortableText from "../../portable-text";
-import CommentSection from "@/components/CommentSection";
 
 import * as demo from "@/sanity/lib/demo";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { postQuery, settingsQuery } from "@/sanity/lib/queries";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
+import { CommentSection } from "@/components/CommentSection";
+import { auth } from "@/auth";
+import { SignInButton } from "@/components/buttons";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -34,9 +36,10 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(
-  { params }: Props,
+  props: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  const params = await props.params;
   const post = await sanityFetch({
     query: postQuery,
     params,
@@ -55,7 +58,9 @@ export async function generateMetadata(
   } satisfies Metadata;
 }
 
-export default async function PostPage({ params }: Props) {
+export default async function PostPage(props: Props) {
+  const params = await props.params;
+  const session = await auth();
   const [post, settings] = await Promise.all([
     sanityFetch({ query: postQuery, params }),
     sanityFetch({ query: settingsQuery }),
@@ -102,12 +107,21 @@ export default async function PostPage({ params }: Props) {
             value={post.content as PortableTextBlock[]}
           />
         )}
-        <div className="mx-auto max-w-2xl mt-12">
-          <CommentSection postId={post._id} />
-        </div>
+        {session ? (
+          <div>
+            <CommentSection postId={post._id} />
+          </div>
+        ) : (
+          <div className="max-w-3xl mx-auto h-[300px] flex items-center flex-col gap-3">
+            <p className="text-sm text-gray-500 mt-10">
+              Please sign in to view comments.
+            </p>
+              <SignInButton/>
+          </div>
+        )}
       </article>
       <aside>
-        <hr className="border-accent-2 mb-24 mt-28" />
+        <hr className="border-accent-2 mb-24 " />
         <h2 className="mb-8 text-6xl font-bold leading-tight tracking-tighter md:text-7xl">
           Recent Stories
         </h2>

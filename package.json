@@ -34,6 +34,7 @@
     "@sanity/preview-url-secret": "^2.0.0",
     "@sanity/vision": "^3.62.0",
     "@tailwindcss/typography": "^0.5.15",
+    "@tanstack/react-query": "^5.66.9",
     "@vercel/speed-insights": "^1.0.13",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
