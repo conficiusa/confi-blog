@@ -9,6 +9,7 @@ import {
 import SignInform from "@/components/signInform";
 
 import { GitHubSignInButton, GoogleSignInButton } from "@/components/buttons";
+import { Suspense } from "react";
 
 export default function SignInDialog() {
   return (
@@ -26,8 +27,10 @@ export default function SignInDialog() {
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-4 mt-4">
-            <GoogleSignInButton />
-            <GitHubSignInButton />
+            <Suspense>
+              <GoogleSignInButton />
+              <GitHubSignInButton />
+            </Suspense>
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-gray-300" />

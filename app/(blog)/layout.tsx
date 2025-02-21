@@ -6,7 +6,7 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import { settingsQuery } from "@/sanity/lib/queries";
 import Navbar from "@/components/navbar";
 import { cn } from "@/lib/utils";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import React from "react";
 import "../globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -18,11 +18,11 @@ import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 import AuthProvider from "@/components/providers/sessionProvider";
 import TanstackProvider from "@/components/providers/tanstackProvider";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
+// const inter = Inter({
+//   variable: "--font-inter",
+//   subsets: ["latin"],
+//   display: "swap",
+// });
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await sanityFetch({
     query: settingsQuery,
@@ -65,11 +65,11 @@ export default async function RootLayout({
   const { isEnabled: isDraftMode } = await draftMode();
 
   return (
-    <html lang="en" className={cn(" bg-white text-black", inter.variable)}>
+    <html lang="en" className={cn(" bg-white text-black")}>
 
       <AuthProvider>
         <TanstackProvider>
-        <body className="container mx-auto px-5 py-2 justify-end flex flex-col min-h-screen">
+        <body className="container mx-auto sm:px-5 px-2 py-2 justify-end flex flex-col min-h-screen">
           <div>
             <section className="min-h-screen">
               {isDraftMode && <AlertBanner />}
@@ -81,7 +81,7 @@ export default async function RootLayout({
                 {children}
               </main>
               <footer className="bg-accent-1 border-accent-2 border-t">
-                <div className="container mx-auto px-5">
+                <div className="container mx-auto sm:px-5 px:2">
                   {footer.length > 0 ? (
                     <PortableText
                       className="prose-sm text-pretty bottom-0 w-full max-w-none bg-white py-12 text-center md:py-20"

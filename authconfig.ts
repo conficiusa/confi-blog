@@ -19,8 +19,6 @@ export const authConfig: NextAuthConfig = {
       const adminPaths = ["/studio"];
       const protectedPaths = ["/studio", "/getting-started"];
 
-      // Add getting-started to allowed paths for new users
-
       if (isLoggedIn && currentPath === "/sign-in") {
         return Response.redirect(new URL("/", request.nextUrl));
       }

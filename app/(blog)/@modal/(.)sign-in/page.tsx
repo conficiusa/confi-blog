@@ -1,11 +1,8 @@
 import type React from "react";
-import { Github } from "lucide-react";
-import { Button } from "@/components/ui/button";
-
 import Modal from "@/components/modal";
 import SignInform from "@/components/signInform";
-import { signIn } from "@/auth";
 import { GitHubSignInButton, GoogleSignInButton } from "@/components/buttons";
+import { Suspense } from "react";
 
 export default function SignInDialog() {
   return (

@@ -34,7 +34,7 @@ export function CommentSection({ postId }: CommentSectionProps) {
   }
 
   return (
-    <div className="bg-muted p-10 mt-4">
+    <div className="sm:bg-muted md:px-8  md:py-10 px-2 mt-4 py-3">
       <div className="max-w-3xl mx-auto ">
         <h2 className="text-4xl font-semibold mb-4">Comments</h2>
 

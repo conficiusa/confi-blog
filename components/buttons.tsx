@@ -8,8 +8,11 @@ import { Github } from "lucide-react";
 
 export const SignInButton = () => {
   const pathname = usePathname();
+  const redirect =
+    pathname !== "/" ? `redirect=${encodeURIComponent(pathname)}` : undefined;
+  const href = redirect ? `/sign-in?${redirect}` : "/sign-in";
   return (
-    <Link href={`/sign-in?redirect=${encodeURIComponent(pathname)}`}>
+    <Link href={href}>
       <button className="mx-3 border border-black bg-black py-3 px-12 font-bold text-white transition-colors duration-200 hover:bg-white hover:text-black lg:mb-0 lg:px-8">
         Sign in
       </button>

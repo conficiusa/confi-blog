@@ -13,13 +13,21 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { format } from "date-fns";
-import { Heart, MessageCircle, MoreVertical, Pencil, Trash } from "lucide-react";
+import {
+  Heart,
+  Loader2,
+  MessageCircle,
+  MoreVertical,
+  Pencil,
+  Trash,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 
 interface CommentItemProps {
   comment: Comment;
@@ -124,6 +132,7 @@ export function CommentItem({ comment, postId }: CommentItemProps) {
                     <Pencil className="h-4 w-4 mr-2" />
                     Edit
                   </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleDelete}>
                     <Trash className="h-4 w-4 mr-2" />
                     Delete
@@ -153,9 +162,14 @@ export function CommentItem({ comment, postId }: CommentItemProps) {
                 <Button
                   size="sm"
                   onClick={handleEdit}
+                  className="min-w-[5rem]"
                   disabled={!editContent.trim() || editComment.isPending}
                 >
-                  {editComment.isPending ? "Saving..." : "Save"}
+                  {editComment.isPending ? (
+                    <Loader2 className="w-4 h-4 animate-spin duration-1000" />
+                  ) : (
+                    "Save"
+                  )}
                 </Button>
               </div>
             </div>
@@ -184,7 +198,8 @@ export function CommentItem({ comment, postId }: CommentItemProps) {
                 onClick={() => setShowReplies(!showReplies)}
                 className="text-xs"
               >
-                {showReplies ? "Hide Replies" : "Show Replies"} ({replies.length})
+                {showReplies ? "Hide Replies" : "Show Replies"} (
+                {replies.length})
               </Button>
             )}
           </div>

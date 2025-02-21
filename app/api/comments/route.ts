@@ -28,15 +28,12 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export const POST = auth(async (req) => {
+export const POST = async (req: NextRequest) => {
   try {
-    if (!req.auth) {
-      return NextResponse.json(
-        { error: "You are not authenticated" },
-        { status: 401 }
-      );
+    const session = await auth();
+    if (!session?.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    const session = req.auth;
     const { postId, content, parentId } = await req.json();
 
     if (!postId || !content) {
@@ -76,4 +73,4 @@ export const POST = auth(async (req) => {
       { status: 500 }
     );
   }
-});
+};
