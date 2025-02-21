@@ -30,7 +30,7 @@ const CodeBlocks = ({ value }: any) => {
         </div>
       </button>
       <SyntaxHighlighter
-        language="react"
+        language={value.language}
         style={docco}
         lineNumberStyle={{ color: "rgba(255, 255, 255, 0.5)" }}
         showInlineLineNumbers

@@ -12,7 +12,6 @@ export async function POST(req: Request) {
     }
     const body = await req.json();
     const { interests } = body;
-    console.log("[INTERESTS_POST]", interests);
 
     if (!interests || !Array.isArray(interests)) {
       return NextResponse.json(

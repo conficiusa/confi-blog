@@ -10,10 +10,9 @@ import Onboarding from "./onboarding";
 import type { HeroQueryResult } from "@/sanity.types";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { heroQuery, settingsQuery, topicsQuery } from "@/sanity/lib/queries";
-import {  getStyles } from "@/lib/utils";
+import { getStyles } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Intro } from "@/components/intro";
-
 
 function HeroPost({
   title,
@@ -22,12 +21,11 @@ function HeroPost({
   coverImage,
   date,
   author,
-  topic,
+  topics,
 }: Pick<
   Exclude<HeroQueryResult, null>,
-  "title" | "coverImage" | "date" | "excerpt" | "author" | "slug" | "topic"
+  "title" | "coverImage" | "date" | "excerpt" | "author" | "slug" | "topics"
 >) {
-  console.log(topic?.color);
   return (
     <article>
       <Link className="group mb-8 block md:mb-16" href={`/posts/${slug}`}>
@@ -35,7 +33,7 @@ function HeroPost({
       </Link>
       <div className="mb-20 md:mb-28 md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-8">
         <div>
-          <Badge style={getStyles("purple")}>{topic?.title}</Badge>
+          {topics?.[0] && <Badge style={getStyles(topics[0].color ?? '')}>{topics[0].title}</Badge>}
           <h3 className="text-pretty mb-4 text-4xl leading-tight lg:text-6xl">
             <Link href={`/posts/${slug}`} className="hover:underline">
               {title}
@@ -77,7 +75,7 @@ export default async function Page() {
           excerpt={heroPost.excerpt}
           date={heroPost.date}
           author={heroPost.author}
-          topic={heroPost.topics[0]}
+          topics={heroPost.topics}
         />
       ) : (
         <Onboarding />

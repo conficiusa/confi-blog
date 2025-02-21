@@ -19,7 +19,6 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
     setOpen(value);
     router.back();
   };
-  console.log("Modal");
   return (
     <Dialog defaultOpen={true} open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="overflow-hidden">

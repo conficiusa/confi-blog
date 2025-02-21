@@ -5,9 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-
 export const getStyles = (color: string) => {
-  console.log("color", color);
   switch (color) {
     case "red":
       return {
@@ -60,8 +58,8 @@ export const getStyles = (color: string) => {
         backgroundColor: "rgba(250,240,137,0.3)",
         ":hover": {
           color: "#fde047", // updated lighter hover text color
-          backgroundColor: "rgba(250,240,137,0.3)"
-        }
+          backgroundColor: "rgba(250,240,137,0.3)",
+        },
       };
     case "pink":
       return {
@@ -69,8 +67,8 @@ export const getStyles = (color: string) => {
         backgroundColor: "rgba(244,143,177,0.3)",
         ":hover": {
           color: "#f472b6", // updated lighter hover text color
-          backgroundColor: "rgba(236,112,99,0.3)"
-        }
+          backgroundColor: "rgba(236,112,99,0.3)",
+        },
       };
     case "brown":
       return {
@@ -78,8 +76,8 @@ export const getStyles = (color: string) => {
         backgroundColor: "rgba(210,180,140,0.3)",
         ":hover": {
           color: "#d2a679", // updated lighter hover text color
-          backgroundColor: "rgba(222,184,135,0.3)"
-        }
+          backgroundColor: "rgba(222,184,135,0.3)",
+        },
       };
     case "indigo":
       return {
@@ -87,8 +85,8 @@ export const getStyles = (color: string) => {
         backgroundColor: "rgba(221,160,221,0.3)",
         ":hover": {
           color: "#818cf8", // updated lighter hover text color
-          backgroundColor: "rgba(186,85,211,0.3)"
-        }
+          backgroundColor: "rgba(186,85,211,0.3)",
+        },
       };
     case "cyan":
       return {
@@ -96,8 +94,8 @@ export const getStyles = (color: string) => {
         backgroundColor: "rgba(224,255,255,0.3)",
         ":hover": {
           color: "#22d3ee", // updated lighter hover text color
-          backgroundColor: "rgba(175,238,238,0.3)"
-        }
+          backgroundColor: "rgba(175,238,238,0.3)",
+        },
       };
     case "lime":
       return {
@@ -105,8 +103,8 @@ export const getStyles = (color: string) => {
         backgroundColor: "rgba(240,230,140,0.3)",
         ":hover": {
           color: "#a3e635", // updated lighter hover text color
-          backgroundColor: "rgba(189,183,107,0.3)"
-        }
+          backgroundColor: "rgba(189,183,107,0.3)",
+        },
       };
     case "teal":
       return {
@@ -114,8 +112,8 @@ export const getStyles = (color: string) => {
         backgroundColor: "rgba(175,238,238,0.3)",
         ":hover": {
           color: "#2dd4bf", // updated lighter hover text color
-          backgroundColor: "rgba(127,255,212,0.3)"
-        }
+          backgroundColor: "rgba(127,255,212,0.3)",
+        },
       };
     case "gray":
       return {
@@ -123,8 +121,8 @@ export const getStyles = (color: string) => {
         backgroundColor: "rgba(211,211,211,0.3)",
         ":hover": {
           color: "#9ca3af", // updated lighter hover text color
-          backgroundColor: "rgba(169,169,169,0.3)"
-        }
+          backgroundColor: "rgba(169,169,169,0.3)",
+        },
       };
     case "black":
       return {
@@ -132,8 +130,8 @@ export const getStyles = (color: string) => {
         backgroundColor: "rgba(200,200,200,0.3)",
         ":hover": {
           color: "#4b5563", // updated lighter hover text color
-          backgroundColor: "rgba(169,169,169,0.3)"
-        }
+          backgroundColor: "rgba(169,169,169,0.3)",
+        },
       };
     default:
       return {

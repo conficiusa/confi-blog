@@ -13,8 +13,6 @@ export const authConfig: NextAuthConfig = {
         secret: process.env.AUTH_SECRET as string,
         secureCookie: process.env.NODE_ENV === "production",
       });
-    
-      console.log("confgtoken", token);
       const is_admin = token?.role === "admin";
       const currentPath = request.nextUrl.pathname;
       const isLoggedIn = !!auth?.user;

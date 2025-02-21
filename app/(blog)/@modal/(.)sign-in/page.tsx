@@ -11,10 +11,10 @@ export default function SignInDialog() {
     <Modal>
       <div className="flex flex-col gap-4 mt-4">
         <form
-        action={async ()=>{
-          'use server'
-await signIn("google")
-        }}
+          action={async () => {
+            "use server";
+            await signIn("google");
+          }}
         >
           <Button variant="outline" className="w-full mb-4 ">
             <svg
@@ -43,10 +43,18 @@ await signIn("google")
             Sign in with Google
           </Button>
         </form>
-        <Button>
-          <Github className="mr-2 h-4 w-4" />
-          Sign in with GitHub
-        </Button>
+        <form
+          action={async () => {
+            "use server";
+            await signIn("github");
+          }}
+          className="w-full"
+        >
+          <Button className="w-full">
+            <Github className="mr-2 h-4 w-4" />
+            Sign in with GitHub
+          </Button>
+        </form>
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t border-gray-300" />

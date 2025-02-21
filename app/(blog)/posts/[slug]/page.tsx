@@ -10,6 +10,7 @@ import CoverImage from "../../cover-image";
 import DateComponent from "../../date";
 import MoreStories from "../../more-stories";
 import PortableText from "../../portable-text";
+import CommentSection from "@/components/CommentSection";
 
 import * as demo from "@/sanity/lib/demo";
 import { sanityFetch } from "@/sanity/lib/fetch";
@@ -21,7 +22,7 @@ type Props = {
 };
 
 const postSlugs = defineQuery(
-  `*[_type == "post" && defined(slug.current)]{"slug": slug.current}`,
+  `*[_type == "post" && defined(slug.current)]{"slug": slug.current}`
 );
 
 export async function generateStaticParams() {
@@ -34,7 +35,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(
   { params }: Props,
-  parent: ResolvingMetadata,
+  parent: ResolvingMetadata
 ): Promise<Metadata> {
   const post = await sanityFetch({
     query: postQuery,
@@ -101,6 +102,9 @@ export default async function PostPage({ params }: Props) {
             value={post.content as PortableTextBlock[]}
           />
         )}
+        <div className="mx-auto max-w-2xl mt-12">
+          <CommentSection postId={post._id} />
+        </div>
       </article>
       <aside>
         <hr className="border-accent-2 mb-24 mt-28" />

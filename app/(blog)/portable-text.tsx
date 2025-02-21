@@ -49,7 +49,7 @@ export default function CustomPortableText({
 
   return (
     <div className={["prose", className].filter(Boolean).join(" ")}>
-      <PortableText components={components} value={value} />
+      <PortableText components={components} value={value}/>
     </div>
   );
 }
