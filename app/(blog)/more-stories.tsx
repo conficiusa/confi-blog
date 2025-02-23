@@ -6,6 +6,8 @@ import DateComponent from "./date";
 
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { moreStoriesQuery } from "@/sanity/lib/queries";
+import { Badge } from "@/components/ui/badge";
+import { getStyles } from "@/lib/utils";
 
 export default async function MoreStories(params: {
   skip: string;
@@ -17,12 +19,19 @@ export default async function MoreStories(params: {
     <>
       <div className="mb-32 grid grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32">
         {data?.map((post) => {
-          const { _id, title, slug, coverImage, excerpt, author } = post;
+          const { _id, title, slug, coverImage, excerpt, author, topics } =
+            post;
           return (
             <article key={_id}>
               <Link href={`/posts/${slug}`} className="group mb-5 block">
                 <CoverImage image={coverImage} priority={false} />
               </Link>
+              {topics?.[0] && (
+                <Badge style={getStyles(topics[0].color ?? "")}>
+                  {topics[0].title}
+                </Badge>
+              )}
+
               <h3 className="text-balance mb-3 text-3xl leading-snug">
                 <Link href={`/posts/${slug}`} className="hover:underline">
                   {title}

@@ -54,3 +54,9 @@ export const postQuery = defineQuery(`
     ${postFields}
   }
 `);
+
+export const postsByInterestsQuery = defineQuery(`
+  *[_type == "post" && count((topics[]._ref)[@ in $interests]) > 0] | order(date desc) {
+    ${postFields}
+  }[0...11]
+`);
