@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
-import { getAppURLBYENV } from "./lib/utils";
+import { ENVConfig } from "./lib/utils";
 
 const nextConfig: NextConfig = {
   env: {
-    NEXT_PUBLIC_SITE_URL: getAppURLBYENV(),
+    NEXT_PUBLIC_SITE_URL: ENVConfig.getAppURL(),
   },
 };
 

@@ -12,7 +12,7 @@ import Onboarding from "./onboarding";
 import type { HeroQueryResult } from "@/sanity.types";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { heroQuery, settingsQuery, topicsQuery } from "@/sanity/lib/queries";
-import { getAppURLBYENV, getStyles } from "@/lib/utils";
+import { ENVConfig, getStyles } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Intro } from "@/components/intro";
 
@@ -64,10 +64,10 @@ function HeroPost({
 
 async function getPostsBasedOnInterests() {
   const cookieStore = await cookies();
-  const response = await fetch(`${getAppURLBYENV()}/api/interests`, {
+  const response = await fetch(`${ENVConfig.getAppURL()}/api/interests`, {
     headers: { Cookie: cookieStore.toString() },
   });
-  
+
   if (!response.ok) return null;
   const { posts } = await response.json();
   return posts?.length ? posts : null;
@@ -76,12 +76,12 @@ async function getPostsBasedOnInterests() {
 export default async function Page() {
   const session = await auth();
   let posts = null;
-  
+
   if (session?.user) {
     // Try to fetch posts based on interests first
     posts = await getPostsBasedOnInterests();
   }
-  
+
   // If no interest-based posts or user not logged in, fetch normally
   const [settings, normalPosts] = await Promise.all([
     sanityFetch({
@@ -119,7 +119,10 @@ export default async function Page() {
               <div className="grid grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32">
                 {remainingPosts.map((post: any) => (
                   <article key={post._id}>
-                    <Link href={`/posts/${post.slug}`} className="group mb-4 block">
+                    <Link
+                      href={`/posts/${post.slug}`}
+                      className="group mb-4 block"
+                    >
                       <CoverImage image={post.coverImage} />
                     </Link>
                     <div>
@@ -129,7 +132,10 @@ export default async function Page() {
                         </Badge>
                       )}
                       <h3 className="mb-4 text-3xl leading-tight lg:text-3xl">
-                        <Link href={`/posts/${post.slug}`} className="hover:underline">
+                        <Link
+                          href={`/posts/${post.slug}`}
+                          className="hover:underline"
+                        >
                           {post.title}
                         </Link>
                       </h3>
@@ -137,10 +143,15 @@ export default async function Page() {
                         <DateComponent dateString={post.date} />
                       </div>
                       {post.excerpt && (
-                        <p className="mb-4 text-lg leading-relaxed">{post.excerpt}</p>
+                        <p className="mb-4 text-lg leading-relaxed">
+                          {post.excerpt}
+                        </p>
                       )}
                       {post.author && (
-                        <Avatar name={post.author.name} picture={post.author.picture} />
+                        <Avatar
+                          name={post.author.name}
+                          picture={post.author.picture}
+                        />
                       )}
                     </div>
                   </article>

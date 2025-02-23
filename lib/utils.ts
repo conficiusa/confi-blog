@@ -145,9 +145,20 @@ export const getStyles = (color: string) => {
   }
 };
 
-export const getAppURLBYENV = () => {
-  if (process.env.NODE_ENV === "development") {
+export class ENVConfig {
+  static getAppURL() {
+    if (process.env.NODE_ENV === "production") {
+      return process.env.NEXT_PUBLIC_APP_URL_PROD;
+    }
     return process.env.NEXT_PUBLIC_APP_URL_DEV;
   }
-  return process.env.NEXT_PUBLIC_APP_URL_PROD;
-};
+
+  static getMongoDBURI() {
+    if (process.env.NODE_ENV === "production") {
+      return process.env.MONGODB_URI_PROD
+    }
+    return process.env.MONGODB_URI;
+  }
+
+  // Add more methods as needed for other environment-specific configurations
+}

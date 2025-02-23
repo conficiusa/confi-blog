@@ -1,8 +1,9 @@
 // lib/mongodb.ts
 
 import mongoose, { Mongoose } from "mongoose";
+import { ENVConfig } from "./utils";
 
-const MONGODB_URI = process.env.MONGODB_URI as string;
+const MONGODB_URI = ENVConfig.getMongoDBURI() as string;
 
 if (!MONGODB_URI) {
   throw new Error(
