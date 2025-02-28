@@ -8,6 +8,7 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import { moreStoriesQuery } from "@/sanity/lib/queries";
 import { Badge } from "@/components/ui/badge";
 import { getStyles } from "@/lib/utils";
+import TopicIcon from "@/components/TopicIcon";
 
 export default async function MoreStories(params: {
   skip: string;
@@ -27,7 +28,16 @@ export default async function MoreStories(params: {
                 <CoverImage image={coverImage} priority={false} />
               </Link>
               {topics?.[0] && (
-                <Badge style={getStyles(topics[0].color ?? "")}>
+                <Badge
+                  style={getStyles(topics[0].color ?? "")}
+                  className="px-3"
+                >
+                  <TopicIcon
+                    icon={topics[0].icon}
+                    title={topics[0].title as string}
+                    size={28}
+                    className="mr-2"
+                  />
                   {topics[0].title}
                 </Badge>
               )}

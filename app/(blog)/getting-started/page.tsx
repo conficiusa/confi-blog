@@ -1,50 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { cn, getStyles } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Intro } from "@/components/intro";
-
+import InterestSelection from "@/components/interestSelection";
+import { useRouter } from "next/navigation";
 interface Topic {
   _id: string;
   title: string;
   color: string;
+  icon: any;
 }
-interface InterestPillProps {
-  interest: { id: string; name: string; color: string };
-  isSelected: boolean;
-  onToggle: (id: string) => void;
-}
-
-const InterestPill: React.FC<InterestPillProps> = ({
-  interest,
-  isSelected,
-  onToggle,
-}) => {
-  return (
-    <Button
-      style={!isSelected ? getStyles(interest.color) : undefined}
-      variant={isSelected ? "default" : "outline"}
-      className={`rounded-full px-10 py-2 text-sm font-medium transition-colors ${
-        isSelected
-          ? "bg-primary text-primary-foreground"
-          : "bg-background hover:bg-accent hover:text-accent-foreground"
-      }`}
-      onClick={() => onToggle(interest.id)}
-      aria-pressed={isSelected}
-    >
-      {interest.name}
-    </Button>
-  );
-};
-export default function InterestSelection() {
-  const [topics, setTopics] = useState<Topic[]>([]);
-  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
-  const [settings, setSettings] = useState<any>();
-  const [isLoading, setIsLoading] = useState(false);
+export default function OnboardingPage() {
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [isFetching, setIsFetching] = useState(true);
+  const [topics, setTopics] = useState<Topic[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -54,7 +25,6 @@ export default function InterestSelection() {
         if (!response.ok) throw new Error("Failed to fetch topics");
         const data = await response.json();
         setTopics(data.topics || []);
-        setSettings(data.settings || []);
       } catch (error) {
         console.error("Failed to fetch topics:", error);
       } finally {
@@ -64,12 +34,15 @@ export default function InterestSelection() {
     fetchTopics();
   }, []);
 
-  const handleTopicClick = async (topicId: string) => {
-    setSelectedTopics((prev) => {
-      if (prev.includes(topicId)) {
-        return prev.filter((id) => id !== topicId);
+  const handleInterestToggle = async (interest: string) => {
+    setSelectedInterests((prev) => {
+      if (prev.length === 3) {
+        return prev;
       }
-      const newSelected = [...prev, topicId];
+      if (prev.includes(interest)) {
+        return prev.filter((id) => id !== interest);
+      }
+      const newSelected = [...prev, interest];
       if (newSelected.length === 3) {
         saveInterests(newSelected);
       }
@@ -106,50 +79,50 @@ export default function InterestSelection() {
   }
 
   return (
-    <div className="min-h-screen bg-muted rounded-xl p-8 flex items-center justify-center max-md:flex-col">
-      <Intro title={settings?.title} description={settings?.description} />
-      <div className="max-w-4xl mx-auto bg-white dark:bg-card p-8 rounded-lg shadow-md">
-        <h1 className="text-xl  text-center text-primary">
-          Choose Your Interests
-        </h1>
-        <p className="text-muted-foreground mb-8 text-center text-sm">
-          Select at least 5 topics that interest you to personalize your
-          experience
-        </p>
-
-        <div
-          className={cn(
-            "topics-container flex flex-wrap gap-4 justify-center",
-            isLoading ? "opacity-50 pointer-events-none" : ""
-          )}
+    <div className="min-h-screen flex flex-col relative">
+      {/* Dark overlay when saving interests */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="bg-background rounded-lg p-6 shadow-xl flex flex-col items-center gap-4">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <p className="text-foreground font-medium">Saving your interests...</p>
+          </div>
+        </div>
+      )}
+      
+      <main className="flex-1 container mx-auto px-4 py-12 max-w-7xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+          className="space-y-10"
         >
-          {topics.map((topic) => (
-            <InterestPill
-              key={topic._id}
-              interest={{
-                id: topic._id,
-                name: topic.title,
-                color: topic.color,
-              }}
-              isSelected={selectedTopics.includes(topic._id)}
-              onToggle={handleTopicClick}
-            />
-          ))}
-        </div>
-
-        <div className="mt-8 text-center">
-          {isLoading ? (
-            <div className="flex items-center justify-center gap-2 text-muted-foreground text-sm">
-              <Loader2 className="w-4 h-4 animate-spin " />
-              Saving your selections...
-            </div>
-          ) : (
-            <p className="text-muted-foreground text-xs">
-              Select 3 interests to get started
+          <div className="space-y-4 text-center max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold tracking-tight">
+              Personalize your experience
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Select three topics you're interested in to help us customize your
+              content feed.
             </p>
-          )}
+          </div>
+
+          <div className="space-y-6">
+            <InterestSelection
+              selectedInterests={selectedInterests}
+              onToggle={handleInterestToggle}
+              setIsFetching={setIsFetching}
+              topics={topics}
+            />
+          </div>
+        </motion.div>
+        <div className="mt-8 text-center">
+          <p className="text-muted-foreground text-xs">
+            Select 3 interests to get started
+          </p>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

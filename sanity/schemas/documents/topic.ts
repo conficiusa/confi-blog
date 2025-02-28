@@ -20,6 +20,24 @@ export default defineType({
       options: { source: "title", maxLength: 96 },
       validation: (rule) => rule.required(),
     }),
+    // Add icon field for topic
+    defineField({
+      name: "icon",
+      title: "Icon",
+      type: "image",
+      description: "Upload an icon image for this topic. If none is provided, a default icon will be used.",
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: "alt",
+          type: "string",
+          title: "Alternative text",
+          description: "Important for accessibility",
+        },
+      ],
+    }),
     // New color field with predetermined options
     defineField({
       name: "color",
@@ -48,6 +66,15 @@ export default defineType({
     }),
   ],
   preview: {
-    select: { title: "title" },
+    select: { 
+      title: "title",
+      media: "icon" 
+    },
+    prepare({ title, media }) {
+      return { 
+        title,
+        media: media || DocumentIcon
+      };
+    },
   },
 });

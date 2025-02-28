@@ -15,6 +15,7 @@ import { heroQuery, settingsQuery, topicsQuery } from "@/sanity/lib/queries";
 import { ENVConfig, getStyles } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Intro } from "@/components/intro";
+import TopicIcon from "@/components/TopicIcon";
 
 function HeroPost({
   title,
@@ -36,10 +37,17 @@ function HeroPost({
       <div className="mb-20 md:mb-28 md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-8">
         <div>
           {topics?.[0] && (
-            <Badge style={getStyles(topics[0].color ?? "")}>
+            <Badge style={getStyles(topics[0].color ?? "")} className="px-3">
+              <TopicIcon
+                icon={topics[0].icon}
+                title={topics[0].title as string}
+                size={28}
+                className="mr-2"
+              />
               {topics[0].title}
             </Badge>
           )}
+
           <h3 className="text-pretty mb-4 text-4xl leading-tight lg:text-6xl">
             <Link href={`/posts/${slug}`} className="hover:underline">
               {title}
@@ -127,7 +135,15 @@ export default async function Page() {
                     </Link>
                     <div>
                       {post.topics?.[0] && (
-                        <Badge style={getStyles(post.topics[0].color ?? "")}>
+                        <Badge
+                          style={getStyles(post.topics[0].color ?? "")}
+                          className="flex items-center gap-2 py-1 px-3"
+                        >
+                          <TopicIcon
+                            icon={post.topics[0].icon}
+                            title={post.topics[0].title}
+                            size={18}
+                          />
                           {post.topics[0].title}
                         </Badge>
                       )}

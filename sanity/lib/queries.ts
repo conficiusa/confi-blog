@@ -15,6 +15,7 @@ const postFields = /* groq */ `
     _id,
     title,
     color,
+    icon,
     "slug": slug.current
   }
 `;
@@ -30,8 +31,8 @@ export const topicsQuery = defineQuery(`
     _id,
     title,
     color,
-    "slug":
-      slug.current,
+    icon,
+    "slug": slug.current
   }
 `);
 

@@ -64,6 +64,32 @@ export default defineType({
             withFilename: true,
           },
         },
+        {
+          type: "image",
+          name: "image",
+          title: "Image",
+          options: {
+            hotspot: true,
+            aiAssist: {
+              imageDescriptionField: "alt",
+            },
+          },
+          fields: [
+            {
+              name: "alt",
+              type: "string",
+              title: "Alternative text",
+              description: "Important for SEO and accessibility.",
+              validation: (rule) => rule.required(),
+            },
+            {
+              name: "caption",
+              type: "string",
+              title: "Caption",
+              description: "Optional caption text that appears below the image",
+            },
+          ],
+        },
       ],
     }),
     defineField({

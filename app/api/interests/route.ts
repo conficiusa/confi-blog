@@ -43,7 +43,6 @@ export async function GET() {
   try {
     await connectToDatabase();
     const session = await auth();
-    console.log(session);
     if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
