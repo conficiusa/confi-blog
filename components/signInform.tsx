@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 
 const SignInform = () => {
   return (
-    <form>
+    <form className="opacity-50 pointer-events-none">
       <div className="grid gap-2">
         <Label htmlFor="email" className="text-sm font-medium">
           Email
@@ -20,6 +20,10 @@ const SignInform = () => {
           autoCorrect="off"
           className="rounded-md"
         />
+        <p className="text-sm text-muted-foreground">
+          Email sign in is not available at the moment. we are working on it.
+          please use our alternative sign in methods.
+        </p>
       </div>
       <Button
         className="mt-4 w-full bg-primary text-primary-foreground hover:bg-primary/90"

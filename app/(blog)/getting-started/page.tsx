@@ -103,7 +103,7 @@ export default function OnboardingPage() {
               Personalize your experience
             </h2>
             <p className="text-sm text-muted-foreground">
-              Select three topics you're interested in to help us customize your
+              Select three topics you&apos;re interested in to help us customize your
               content feed.
             </p>
           </div>

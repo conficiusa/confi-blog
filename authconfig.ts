@@ -13,19 +13,28 @@ export const authConfig: NextAuthConfig = {
         secret: process.env.AUTH_SECRET as string,
         secureCookie: process.env.NODE_ENV === "production",
       });
-      const is_admin = token?.role === "admin";
+      const isAdmin = token?.role === "admin";
+      const isEditor = token?.role === "editor";
       const currentPath = request.nextUrl.pathname;
       const isLoggedIn = !!auth?.user;
-      const adminPaths = ["/studio"];
-      const protectedPaths = ["/studio", "/getting-started"];
+      const adminOnlyPaths = ["/admin"];
+      const editorPaths = ["/studio"];
+      const protectedPaths = ["/studio", "/getting-started", "/admin"];
 
       if (isLoggedIn && currentPath === "/sign-in") {
         return Response.redirect(new URL("/", request.nextUrl));
       }
 
-      if (isLoggedIn && !is_admin && adminPaths.includes(currentPath)) {
+      // Only admins can access admin-only paths
+      if (isLoggedIn && !isAdmin && adminOnlyPaths.includes(currentPath)) {
         return Response.redirect(new URL("/", request.nextUrl));
       }
+      
+      // Both admins and editors can access editor paths
+      if (isLoggedIn && !isAdmin && !isEditor && editorPaths.includes(currentPath)) {
+        return Response.redirect(new URL("/", request.nextUrl));
+      }
+      
       if (!isLoggedIn && protectedPaths.includes(currentPath)) {
         return Response.redirect(new URL("/sign-in", request.nextUrl));
       }

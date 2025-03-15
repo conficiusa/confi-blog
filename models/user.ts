@@ -17,7 +17,7 @@ const UserSchema = new Schema<IUser, Model<IUser>>(
     image: { type: String },
     role: {
       type: String,
-      enum: ["admin", "reader"],
+      enum: ["admin", "editor", "reader"],
       default: "reader",
     },
     interests: [{ type: String }],

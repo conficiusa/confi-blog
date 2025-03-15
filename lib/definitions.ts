@@ -6,6 +6,8 @@ export interface IUser extends Document {
   image: string;
   role: string;
   interests: string[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IComment extends Document {

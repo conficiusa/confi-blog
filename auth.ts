@@ -9,18 +9,18 @@ import { authConfig } from "./authconfig";
 
 declare module "next-auth" {
   interface User {
-    role?: "admin" | "reader" | undefined;
+    role?: "admin" | "editor" | "reader" | undefined;
   }
 
   interface Session {
     user: {
       id: string;
-      role?: "admin" | "reader";
+      role?: "admin" | "editor" | "reader";
     } & DefaultSession["user"];
   }
   interface JWT {
     id: string;
-    role?: "admin" | "reader";
+    role?: "admin" | "editor" | "reader";
   }
 }
 
@@ -67,7 +67,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     session: async ({ session, token }) => {
       if (token) {
-        session.user.role = token.role as "admin" | "reader" | undefined;
+        session.user.role = token.role as "admin" | "editor" | "reader" | undefined;
         session.user.id = token.id as string;
       }
       return session;
