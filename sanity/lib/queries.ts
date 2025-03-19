@@ -61,3 +61,10 @@ export const postsByInterestsQuery = defineQuery(`
     ${postFields}
   }[0...11]
 `);
+
+export const allPostsWithInterestsPrioritizedQuery = defineQuery(`
+  *[_type == "post" && defined(slug.current)] {
+    ${postFields},
+    "matchesInterests": count((topics[]._ref)[@ in $interests]) > 0
+  } | order(matchesInterests desc, date desc) [0...20]
+`);
