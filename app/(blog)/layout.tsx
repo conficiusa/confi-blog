@@ -20,6 +20,7 @@ import TanstackProvider from "@/components/providers/tanstackProvider";
 import { Analytics } from "@vercel/analytics/react";
 import { geist } from "@/lib/fonts";
 import Link from "next/link";
+import { auth } from "@/auth";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const settings = await sanityFetch({
@@ -61,6 +62,7 @@ export default async function RootLayout({
 	const data = await sanityFetch({ query: settingsQuery });
 	const footer = data?.footer || [];
 	const { isEnabled: isDraftMode } = await draftMode();
+	const session = await auth();
 
 	return (
 		<html lang='en' className={cn(" bg-white text-black", geist.className)}>
@@ -91,12 +93,17 @@ export default async function RootLayout({
 													Confi.dev
 												</h3>
 												<div className='flex flex-col items-center justify-center lg:w-1/2 lg:flex-row lg:pl-4'>
-													<Link
-														href='/sign-in'
-														className='mx-3 mb-6 border border-black bg-black py-3 px-12 font-bold text-white transition-colors duration-200 hover:bg-white hover:text-black lg:mb-0 lg:px-8'
-													>
-														Join the Community
-													</Link>
+													{!session ||
+														!session.user ||
+														(!session.user.id && (
+															<Link
+																href='/sign-in'
+																className='mx-3 mb-6 border border-black bg-black py-3 px-12 font-bold text-white transition-colors duration-200 hover:bg-white hover:text-black lg:mb-0 lg:px-8'
+															>
+																Join the Community
+															</Link>
+														))}
+
 													<a
 														href='https://github.com/conficiusa'
 														className='mx-3 font-bold hover:underline'
