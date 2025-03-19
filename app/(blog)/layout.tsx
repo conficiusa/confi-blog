@@ -19,6 +19,7 @@ import AuthProvider from "@/components/providers/sessionProvider";
 import TanstackProvider from "@/components/providers/tanstackProvider";
 import { Analytics } from "@vercel/analytics/react";
 import { geist } from "@/lib/fonts";
+import Link from "next/link";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const settings = await sanityFetch({
@@ -62,10 +63,7 @@ export default async function RootLayout({
 	const { isEnabled: isDraftMode } = await draftMode();
 
 	return (
-		<html
-			lang='en'
-			className={cn(" bg-white text-black", geist.className)}
-		>
+		<html lang='en' className={cn(" bg-white text-black", geist.className)}>
 			<AuthProvider>
 				<TanstackProvider>
 					<body className='container mx-auto sm:px-5 px-2 py-2 justify-end flex flex-col min-h-screen'>
@@ -93,15 +91,17 @@ export default async function RootLayout({
 													Confi.dev
 												</h3>
 												<div className='flex flex-col items-center justify-center lg:w-1/2 lg:flex-row lg:pl-4'>
-													<a
-														href='https://nextjs.org/docs'
+													<Link
+														href='/sign-in'
 														className='mx-3 mb-6 border border-black bg-black py-3 px-12 font-bold text-white transition-colors duration-200 hover:bg-white hover:text-black lg:mb-0 lg:px-8'
 													>
 														Join the Community
-													</a>
+													</Link>
 													<a
-														href='https://github.com/vercel/next.js/tree/canary/examples/cms-sanity'
+														href='https://github.com/conficiusa'
 														className='mx-3 font-bold hover:underline'
+														target='_blank'
+														rel='noopener noreferrer'
 													>
 														View on GitHub
 													</a>
