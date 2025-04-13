@@ -6,6 +6,7 @@ import { codeInput } from "@sanity/code-input";
 import { visionTool } from "@sanity/vision";
 import { PluginOptions, defineConfig } from "sanity";
 import { unsplashImageAsset } from "sanity-plugin-asset-source-unsplash";
+import { table } from "@sanity/table";
 import {
   presentationTool,
   defineDocuments,
@@ -44,6 +45,7 @@ export default defineConfig({
   },
   plugins: [
     codeInput(),
+    table(),
     presentationTool({
       resolve: {
         mainDocuments: defineDocuments([

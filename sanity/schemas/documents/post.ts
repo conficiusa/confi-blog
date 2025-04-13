@@ -53,6 +53,7 @@ export default defineType({
           options: {
             languageAlternatives: [
               { title: "", value: "" },
+              {title:"Yaml",value:"yaml"},
               { title: "Javascript", value: "javascript" },
               { title: "HTML", value: "html" },
               { title: "Jsx", value: "jsx" },
@@ -75,6 +76,11 @@ export default defineType({
             ],
             withFilename: true,
           },
+        },
+        {
+          type: "table",
+          name: "table",
+          title: "Table",
         },
         {
           type: "image",

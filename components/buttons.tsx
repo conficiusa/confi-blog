@@ -40,11 +40,11 @@ export const GitHubSignInButton = () => {
   return (
     <Button
       variant="outline"
-      className="w-full mb-4 "
+      className="w-full mb-4 bg-black text-white"
       onClick={async () => handleOauthSignIn(redirect, "github")}
     >
-      <Github className="mr-2 h-4 w-4" />
-      Sign in with Google
+      <Github className="mr-2 h-4 w-4 text-white" />
+      Sign in with Github
     </Button>
   );
 };

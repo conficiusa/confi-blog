@@ -50,6 +50,52 @@ function ImageBlock({ value }: ImageBlockProps) {
   );
 }
 
+interface TableProps {
+  value: {
+    rows?: {
+      cells: string[];
+    }[];
+  };
+}
+
+function TableBlock({ value }: TableProps) {
+  const { rows = [] } = value;
+
+  if (!rows || rows.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="my-8 overflow-x-auto">
+      <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-md">
+        <tbody className="divide-y divide-gray-200">
+          {rows.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.cells.map((cell, cellIndex) => {
+                if (rowIndex === 0) {
+                  return (
+                    <th
+                      key={cellIndex}
+                      className="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-700"
+                    >
+                      {cell}
+                    </th>
+                  );
+                }
+                return (
+                  <td key={cellIndex} className="px-4 py-3 text-sm">
+                    {cell}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export default function CustomPortableText({
   className,
   value,
@@ -64,6 +110,9 @@ export default function CustomPortableText({
       },
       image: ({ value }: ImageBlockProps) => {
         return <ImageBlock value={value} />;
+      },
+      table: ({ value }: TableProps) => {
+        return <TableBlock value={value} />;
       },
     },
     block: {

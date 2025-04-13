@@ -21,6 +21,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { geist } from "@/lib/fonts";
 import Link from "next/link";
 import { auth } from "@/auth";
+import LoaderProvider from "@/components/providers/LoaderProvider";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const settings = await sanityFetch({
@@ -40,13 +41,17 @@ export async function generateMetadata(): Promise<Metadata> {
 	} catch {
 		// ignore
 	}
+	
+	// Convert description to plain text and ensure it's string or undefined (not null)
+	const plainTextDescription = description ? toPlainText(description) || undefined : undefined;
+	
 	return {
 		metadataBase,
 		title: {
 			template: `%s | ${title}`,
 			default: title,
 		},
-		description: toPlainText(description),
+		description: plainTextDescription,
 		openGraph: {
 			images: ogImage ? [ogImage] : [],
 		},
@@ -65,7 +70,11 @@ export default async function RootLayout({
 	const session = await auth();
 
 	return (
-		<html lang='en' className={cn(" bg-white text-black", geist.className)}>
+		<html
+			lang='en'
+			className={cn(" bg-white text-black", geist.className)}
+			suppressHydrationWarning
+		>
 			<AuthProvider>
 				<TanstackProvider>
 					<body className='container mx-auto sm:px-5 px-2 py-2 justify-end flex flex-col min-h-screen'>

@@ -119,6 +119,8 @@ export type Post = {
   } | {
     _key: string;
   } & Code | {
+    _key: string;
+  } & Table | {
     asset?: {
       _ref: string;
       _type: "reference";
@@ -424,6 +426,18 @@ export type SanityAssistSchemaTypeField = {
   } & SanityAssistInstruction>;
 };
 
+export type Table = {
+  _type: "table";
+  rows?: Array<{
+    _key: string;
+  } & TableRow>;
+};
+
+export type TableRow = {
+  _type: "tableRow";
+  cells?: Array<string>;
+};
+
 export type Code = {
   _type: "code";
   language?: string;
@@ -432,7 +446,7 @@ export type Code = {
   highlightedLines?: Array<number>;
 };
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Topic | Post | Author | Slug | Settings | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | Code;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Topic | Post | Author | Slug | Settings | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | Table | TableRow | Code;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./app/(blog)/posts/[slug]/page.tsx
 // Variable: postSlugs
@@ -582,6 +596,8 @@ export type HeroQueryResult = {
   content: Array<{
     _key: string;
   } & Code | {
+    _key: string;
+  } & Table | {
     children?: Array<{
       marks?: Array<string>;
       text?: string;
@@ -725,6 +741,8 @@ export type PostQueryResult = {
   content: Array<{
     _key: string;
   } & Code | {
+    _key: string;
+  } & Table | {
     children?: Array<{
       marks?: Array<string>;
       text?: string;
@@ -862,6 +880,62 @@ export type PostsByInterestsQueryResult = Array<{
     slug: string | null;
   }> | null;
 }>;
+// Variable: allPostsWithInterestsPrioritizedQuery
+// Query: *[_type == "post" && defined(slug.current)] {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{"name": coalesce(name, "Anonymous"), picture},  "topics": topics[]->{    _id,    title,    color,    icon,    "slug": slug.current  },    "matchesInterests": count((topics[]._ref)[@ in $interests]) > 0  } | order(matchesInterests desc, date desc) [0...20]
+export type AllPostsWithInterestsPrioritizedQueryResult = Array<{
+  _id: string;
+  status: "draft" | "published";
+  title: string | "Untitled";
+  slug: string | null;
+  excerpt: string | null;
+  coverImage: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+  date: string;
+  author: {
+    name: string | "Anonymous";
+    picture: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    } | null;
+  } | null;
+  topics: Array<{
+    _id: string;
+    title: string | null;
+    color: "black" | "blue" | "brown" | "cyan" | "gray" | "green" | "indigo" | "lime" | "orange" | "pink" | "purple" | "red" | "teal" | "yellow" | null;
+    icon: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    } | null;
+    slug: string | null;
+  }> | null;
+  matchesInterests: boolean | null;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -875,5 +949,6 @@ declare module "@sanity/client" {
     "\n  *[_type == \"post\" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  \"status\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  coverImage,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{\"name\": coalesce(name, \"Anonymous\"), picture},\n  \"topics\": topics[]->{\n    _id,\n    title,\n    color,\n    icon,\n    \"slug\": slug.current\n  }\n\n  }\n": MoreStoriesQueryResult;
     "\n  *[_type == \"post\" && slug.current == $slug] [0] {\n    content,\n    \n  _id,\n  \"status\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  coverImage,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{\"name\": coalesce(name, \"Anonymous\"), picture},\n  \"topics\": topics[]->{\n    _id,\n    title,\n    color,\n    icon,\n    \"slug\": slug.current\n  }\n\n  }\n": PostQueryResult;
     "\n  *[_type == \"post\" && count((topics[]._ref)[@ in $interests]) > 0] | order(date desc) {\n    \n  _id,\n  \"status\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  coverImage,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{\"name\": coalesce(name, \"Anonymous\"), picture},\n  \"topics\": topics[]->{\n    _id,\n    title,\n    color,\n    icon,\n    \"slug\": slug.current\n  }\n\n  }[0...11]\n": PostsByInterestsQueryResult;
+    "\n  *[_type == \"post\" && defined(slug.current)] {\n    \n  _id,\n  \"status\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  coverImage,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{\"name\": coalesce(name, \"Anonymous\"), picture},\n  \"topics\": topics[]->{\n    _id,\n    title,\n    color,\n    icon,\n    \"slug\": slug.current\n  }\n,\n    \"matchesInterests\": count((topics[]._ref)[@ in $interests]) > 0\n  } | order(matchesInterests desc, date desc) [0...20]\n": AllPostsWithInterestsPrioritizedQueryResult;
   }
 }

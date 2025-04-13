@@ -46,15 +46,31 @@ export async function generateMetadata(
     stega: false,
   });
   const previousImages = (await parent).openGraph?.images || [];
+  
+  // Use the resolveOpenGraphImage utility for proper image URL handling
   const ogImage = resolveOpenGraphImage(post?.coverImage);
+  
+  // Ensure description is string or undefined (not null)
+  const safeExcerpt = post?.excerpt || undefined;
 
   return {
     authors: post?.author?.name ? [{ name: post?.author?.name }] : [],
-    title: post?.title,
-    description: post?.excerpt,
+    title: post?.title || undefined,
+    description: safeExcerpt,
     openGraph: {
+      title: post?.title || undefined,
+      description: safeExcerpt,
+      type: 'article',
+      publishedTime: post?.date || undefined,
+      authors: post?.author?.name ? [post.author.name] : [],
       images: ogImage ? [ogImage, ...previousImages] : previousImages,
     },
+    twitter: {
+      card: 'summary_large_image',
+      title: post?.title || undefined,
+      description: safeExcerpt,
+      images: ogImage ? [ogImage] : [],
+    }
   } satisfies Metadata;
 }
 
